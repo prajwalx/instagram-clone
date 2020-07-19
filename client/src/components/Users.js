@@ -18,10 +18,9 @@ class Users extends Component {
                         className="img-rounded" width="100px"height="100px"></img>
                 </div>
                 <div className="col-5 p-2">
-                    <h5 className="mb-0">{user.name}</h5>
+                    <Link to={{pathname:"/profile",user}}><h5 className="mb-0">{user.name}</h5></Link>
                     <p className="mb-0">{user.email}</p>
                     <p>{user.location||'New Delhi, India'}</p>
-                    {/* <p>{user.createdAt}</p> */}
                 </div>
                 <div className="col-4 d-flex align-items-center">
                     <button className="btn btn-sm btn-primary ml-auto">Add Friend</button>

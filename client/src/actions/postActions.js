@@ -25,6 +25,7 @@ export const createUser = userData => dispatch => {
         
         /*set jwt token local storage */
         localStorage.setItem('access_token',res.token)
+        localStorage.setItem('user',JSON.stringify(res.user))
 
         /* dispatch LOGIN: logs-in user  */
         dispatch({
@@ -70,6 +71,7 @@ export const logIn = postData => dispatch => {
 
       /*set jwt token local storage */
       localStorage.setItem('access_token',res.token)
+      localStorage.setItem('user',JSON.stringify(res.user))
 
       /* dispatch LOGIN: logs-in user  */
       dispatch({
@@ -95,11 +97,13 @@ export const logIn = postData => dispatch => {
 export const isLoggedIn = () => dispatch => {
   const token = localStorage.getItem('access_token');
   if(token){
+    const user = JSON.parse(localStorage.getItem('user'));
     return dispatch({
       type: IS_LOGGED_IN,
       payload:{
         auth:true,
-        token
+        token,
+        user
       }
     });
   }
@@ -116,6 +120,7 @@ export const isLoggedIn = () => dispatch => {
 /* Action to perform Logout */
 export const logOut = postData => dispatch => {
   localStorage.removeItem('access_token');
+  localStorage.removeItem('user')
   dispatch({
     type: LOGOUT,
     payload:{

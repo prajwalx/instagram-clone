@@ -3,6 +3,7 @@ import { LOGIN, SIGNUP_ERROR, IS_LOGGED_IN, LOGIN_ERROR, LOGOUT, FETCH_USERS } f
 const initialState = {
   items: [],
   item: {},
+  user: {},
   users: [],
   auth: false,
   token: null,
@@ -29,7 +30,8 @@ export default function(state = initialState, action) {
       return {
         ...state,
         auth: action.payload.auth,
-        token: action.payload.token
+        token: action.payload.token,
+        user: action.payload.user
       };
     case LOGIN_ERROR:
       return {

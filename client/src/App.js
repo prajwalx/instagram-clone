@@ -18,6 +18,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Users from './components/Users';
 import history from './components/history';
+import Profile from './components/Profile';
 
 
 class App extends Component {
@@ -47,6 +48,7 @@ class App extends Component {
               <PublicOnlyRoute exact={true} path="/login"   component={(Login)} />
               <PublicOnlyRoute exact={true} path="/signup"  component={(Signup)} />
               <PrivateRoute exact={true} path="/users"   component={(Users)}/>
+              <PrivateRoute exact={true} path="/profile"   component={(Profile)}/>
             </Switch>
               
           </div>

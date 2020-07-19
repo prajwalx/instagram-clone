@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {Navbar,Nav,Form,Button,FormControl} from 'react-bootstrap';
+import {Navbar,Nav,Form,Button,FormControl,NavDropdown} from 'react-bootstrap';
 import {Link,withRouter} from 'react-router-dom';
 import {logOut,fetchUsers} from '../actions/postActions'
 
@@ -47,6 +47,15 @@ class NavbarComponent extends Component {
           <Button variant="info"className="mr-sm-2"onClick={this.props.logOut}>Logout</Button>
         </Fragment>
       )
+      const Settings = (
+        <NavDropdown title="Settings" id="basic-nav-dropdown">
+                <NavDropdown.Item ><Link to={{pathname:"/profile",user:this.props.user}}>Profile</Link></NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="#action/3.4">Edit</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={this.props.logOut}>LogOut</NavDropdown.Item>
+        </NavDropdown>
+      )
       const SearchBar = (
         <Fragment>
           <Form inline onSubmit={this.onSubmit}>
@@ -72,9 +81,11 @@ class NavbarComponent extends Component {
               <Nav.Link><Link to="/posts">Posts</Link></Nav.Link>
               { this.props.auth === true && SearchBar }
             </Nav>
-            <Form inline className="ml-auto">
+            <Form inline className="ml-auto mr-5">
               { this.props.auth === false && LoginSignupButtons }
-              { this.props.auth === true && LogOutButton }
+              { this.props.auth === true && Settings }
+              {/* { this.props.auth === true && LogOutButton } */}
+              
               
             </Form>
           </Navbar.Collapse>
