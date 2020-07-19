@@ -33,7 +33,19 @@ const userSchema = new Schema({
   picture: {
     type: String,
     trim: true
-  }
+  },
+  bio: {
+    type: String,
+    trim: true
+  },
+  location: {
+    type: String,
+    trim: true
+  },
+  friends: [{
+    type: Schema.ObjectId,
+    ref: 'User'
+  }]
 }, {
   timestamps: true
 })
@@ -66,7 +78,7 @@ userSchema.pre('save', function (next) {
 userSchema.methods = {
   view (full) {
     const view = {}
-    let fields = ['id', 'name', 'picture']
+    let fields = ['id', 'name', 'picture', 'bio', 'location']
 
     if (full) {
       fields = [...fields, 'email', 'createdAt']
@@ -74,7 +86,7 @@ userSchema.methods = {
 
     fields.forEach((field) => { view[field] = this[field] })
 
-    return view
+    return { ...view, friends: this.friends.map(frnd => frnd.view(full)) }
   },
 
   authenticate (password) {

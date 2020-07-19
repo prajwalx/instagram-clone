@@ -4,6 +4,7 @@ import { sign } from '../../services/jwt'
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   User.find(query, select, cursor)
+    .populate('friends')
     .then((users) => users.map((user) => user.view(true)))
     .then(success(res))
     .catch(next)
