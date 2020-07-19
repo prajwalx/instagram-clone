@@ -1,4 +1,4 @@
-import { LOGIN, SIGNUP_ERROR, IS_LOGGED_IN, LOGIN_ERROR, LOGOUT } from './types';
+import { LOGIN, SIGNUP_ERROR, IS_LOGGED_IN, LOGIN_ERROR, LOGOUT, FETCH_USERS } from './types';
 import history from '../components/history';
 
 /**
@@ -127,3 +127,36 @@ export const logOut = postData => dispatch => {
   })
 };
 
+export const fetchUsers = ({query,history}) => dispatch => {
+  const token = localStorage.getItem('access_token');
+  fetch(`http://0.0.0.0:9000/users?q=${query}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer '+ token,
+      'content-type': 'application/json'
+    }
+  })
+  .then(async(res)=>{
+    /*throw error on fail */
+    if(res.ok)
+      return res.json()
+    else
+      throw  (res)
+  })
+  .then((res) =>{
+    /* Success request */
+      console.log(res)
+      /* dispatch LOGIN: logs-in user  */
+      dispatch({
+        type: FETCH_USERS,
+        payload: {users:res}
+      })
+
+      /* redirect to home page */
+      history.push('/users');
+  })
+  .catch((err) =>{
+    /* Login Error */
+    console.error(err);
+  })
+};

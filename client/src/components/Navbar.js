@@ -1,11 +1,35 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {Navbar,Nav,Form,Button} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
-import {logOut} from '../actions/postActions'
+import {Navbar,Nav,Form,Button,FormControl} from 'react-bootstrap';
+import {Link,withRouter} from 'react-router-dom';
+import {logOut,fetchUsers} from '../actions/postActions'
 
 class NavbarComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      query:''
+    };
+
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+
+    const apiParams = {
+      query: this.state.query,
+      history:this.props.history
+    };
+
+    this.props.fetchUsers(apiParams);
+  }
 
   render() {
       const LoginSignupButtons = (
@@ -23,6 +47,19 @@ class NavbarComponent extends Component {
           <Button variant="info"className="mr-sm-2"onClick={this.props.logOut}>Logout</Button>
         </Fragment>
       )
+      const SearchBar = (
+        <Fragment>
+          <Form inline onSubmit={this.onSubmit}>
+            <FormControl type="text" placeholder="Search" className="ml-2 mr-1"style={{width:'400px'}}
+              name="query"
+              onChange={this.onChange}
+              value={this.state.query} />
+              {/* <Link to="/users"> */}
+                <Button variant="outline-danger"type="submit">Search</Button>
+              {/* </Link> */}
+          </Form>
+        </Fragment>
+      )
 
     return (
       <div>
@@ -30,11 +67,12 @@ class NavbarComponent extends Component {
           <Navbar.Brand href="#home">Social Net App</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
+            <Nav className="">
               <Nav.Link><Link to="/">Home</Link></Nav.Link>
               <Nav.Link><Link to="/posts">Posts</Link></Nav.Link>
+              { this.props.auth === true && SearchBar }
             </Nav>
-            <Form inline>
+            <Form inline className="ml-auto">
               { this.props.auth === false && LoginSignupButtons }
               { this.props.auth === true && LogOutButton }
               
@@ -48,6 +86,7 @@ class NavbarComponent extends Component {
 
 NavbarComponent.propTypes = {
   logOut: PropTypes.func.isRequired,
+  fetchUsers: PropTypes.func.isRequired,
   user: PropTypes.object,
   auth: PropTypes.bool
 };
@@ -57,4 +96,4 @@ const mapStateToProps = state => ({
   auth: state.posts.auth
 });
 
-export default connect(mapStateToProps, {logOut})(NavbarComponent);
+export default withRouter(connect(mapStateToProps, {logOut,fetchUsers})(NavbarComponent));

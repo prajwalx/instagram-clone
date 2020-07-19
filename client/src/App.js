@@ -16,6 +16,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import NavbarComponent from './components/Navbar';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import Users from './components/Users';
 import history from './components/history';
 
 
@@ -43,9 +44,9 @@ class App extends Component {
             <br/>
 
             <Switch>
-              <PublicOnlyRoute  path="/login"   component={Login} />
-              <PublicOnlyRoute  path="/signup"  component={Signup} />
-              <PrivateRoute     path="/" >Hello login user</PrivateRoute>
+              <PublicOnlyRoute exact={true} path="/login"   component={(Login)} />
+              <PublicOnlyRoute exact={true} path="/signup"  component={(Signup)} />
+              <PrivateRoute exact={true} path="/users"   component={(Users)}/>
             </Switch>
               
           </div>

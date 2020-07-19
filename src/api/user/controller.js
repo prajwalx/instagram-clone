@@ -4,7 +4,7 @@ import { sign } from '../../services/jwt'
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   User.find(query, select, cursor)
-    .then((users) => users.map((user) => user.view()))
+    .then((users) => users.map((user) => user.view(true)))
     .then(success(res))
     .catch(next)
 
