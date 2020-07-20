@@ -4,6 +4,7 @@ import { middleware as body } from 'bodymen'
 import { token } from '../../services/passport'
 import { create, index, show, update, destroy, like, dislike, newsfeed } from './controller'
 import { schema } from './model'
+import { Schema } from 'mongoose'
 export Post, { schema } from './model'
 
 const path = require('path')
@@ -55,7 +56,7 @@ router.post('/dislike/:id',
   dislike)
 
 /** Fetch newsFeed posts */
-router.get('/myPosts',
+router.get('/newsfeed',
   token({ required: true }),
   query(),
   newsfeed)
@@ -73,7 +74,7 @@ router.get('/myPosts',
  */
 router.get('/',
   token({ required: true }),
-  query(),
+  query({ user: { type: Schema.ObjectId } }),
   index)
 
 /**

@@ -1,6 +1,6 @@
 import { LOGIN, SIGNUP_ERROR, IS_LOGGED_IN, LOGIN_ERROR, LOGOUT, 
   FETCH_USERS, FETCH_SENT_FRIEND_REQUESTS, FETCH_RECEIVED_FRIEND_REQUESTS,
-  UPDATE_USER
+  UPDATE_USER,FETCH_NEWSFEED,FETCH_PROFILE_POSTS
  } from './types';
 import history from '../components/history';
 
@@ -322,3 +322,163 @@ export const respondToFriendRequest = ({requestId, status, fromUser}) => dispatc
       console.error(err);
     })
 };
+
+/* Fetch NewsFeed  */
+export const fetchNewsFeed = () => dispatch => {
+  const token = localStorage.getItem('access_token');
+  if(!token){ return  }
+  // const user = JSON.parse(localStorage.getItem('user'));
+
+  fetch(`http://0.0.0.0:9000/posts/newsfeed`, {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer '+ token,
+      'content-type': 'application/json'
+    }
+  })
+  .then((res)=>{
+    /*throw error on fail */
+    if(res.ok)
+      return res.json()
+    else
+      throw  (res)
+  })
+  .then((res) =>{
+    /* Success request */
+      dispatch({
+        type: FETCH_NEWSFEED,
+        payload: {newsfeed:res}
+      })
+
+  })
+  .catch((err) =>{
+    /* Log Error */
+    console.error(err);
+  })
+};
+
+/* Fetch Profile Posts  */
+export const fetchProfilePosts = (user) => dispatch => {
+  const token = localStorage.getItem('access_token');
+  if(!token){ return  }
+  // const user = JSON.parse(localStorage.getItem('user'));
+
+  fetch(`http://0.0.0.0:9000/posts?user=${user.id}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer '+ token,
+      'content-type': 'application/json'
+    }
+  })
+  .then((res)=>{
+    /*throw error on fail */
+    if(res.ok)
+      return res.json()
+    else
+      throw  (res)
+  })
+  .then((res) =>{
+    /* Success request */
+      dispatch({
+        type: FETCH_PROFILE_POSTS,
+        payload: {profilePosts:res}
+      })
+
+  })
+  .catch((err) =>{
+    /* Log Error */
+    console.error(err);
+  })
+};
+
+/* Create post  */
+export const createPost = (postFormData) => dispatch => {
+  const token = localStorage.getItem('access_token');
+  if(!token){ return  }
+  // const user = JSON.parse(localStorage.getItem('user'));
+
+  fetch(`http://0.0.0.0:9000/posts`, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer '+ token
+    },
+    body: postFormData
+  })
+  .then((res)=>{
+    /*throw error on fail */
+    if(res.ok)
+      return res.json()
+    else
+      throw  (res)
+  })
+  .then((res) =>{
+    /* Success request */
+      dispatch(fetchNewsFeed())
+  })
+  .catch((err) =>{
+    /* Log Error */
+    console.error(err);
+  })
+};
+
+
+/* like post  */
+export const likePost = (postId) => dispatch => {
+  const token = localStorage.getItem('access_token');
+  if(!token){ return  }
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  fetch(`http://0.0.0.0:9000/posts/like/${postId}`, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer '+ token
+    }
+  })
+  .then((res)=>{
+    /*throw error on fail */
+    if(res.ok)
+      return res.json()
+    else
+      throw  (res)
+  })
+  .then((res) =>{
+    /* Success request */
+      dispatch(fetchNewsFeed())
+  })
+  .catch((err) =>{
+    /* Log Error */
+    console.error(err);
+  })
+};
+
+
+/* dislike post  */
+export const dislikePost = (postId) => dispatch => {
+  const token = localStorage.getItem('access_token');
+  if(!token){ return  }
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  fetch(`http://0.0.0.0:9000/posts/dislike/${postId}`, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer '+ token
+    }
+  })
+  .then((res)=>{
+    /*throw error on fail */
+    if(res.ok)
+      return res.json()
+    else
+      throw  (res)
+  })
+  .then((res) =>{
+    /* Success request */
+      dispatch(fetchNewsFeed())
+  })
+  .catch((err) =>{
+    /* Log Error */
+    console.error(err);
+  })
+};
+
+

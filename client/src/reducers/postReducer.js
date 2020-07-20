@@ -1,4 +1,6 @@
-import { LOGIN, SIGNUP_ERROR, IS_LOGGED_IN, LOGIN_ERROR, LOGOUT, FETCH_USERS, FETCH_SENT_FRIEND_REQUESTS, FETCH_RECEIVED_FRIEND_REQUESTS, UPDATE_USER } from '../actions/types';
+import { LOGIN, SIGNUP_ERROR, IS_LOGGED_IN, LOGIN_ERROR, LOGOUT, 
+  FETCH_USERS, FETCH_SENT_FRIEND_REQUESTS, FETCH_RECEIVED_FRIEND_REQUESTS, 
+  UPDATE_USER, FETCH_NEWSFEED, FETCH_PROFILE_POSTS } from '../actions/types';
 
 const initialState = {
   items: [],
@@ -7,6 +9,8 @@ const initialState = {
   users: [],
   sentFriendRequests: [],
   receivedFriendRequests: [],
+  newsfeed: [],
+  profilePosts: [],
   auth: false,
   token: null,
   error: null
@@ -68,6 +72,16 @@ export default function(state = initialState, action) {
       return {
         ...state,
         user: action.payload.user
+      }
+    case FETCH_NEWSFEED:
+      return {
+        ...state,
+        newsfeed: action.payload.newsfeed
+      }
+    case FETCH_PROFILE_POSTS:
+      return {
+        ...state,
+        profilePosts: action.payload.profilePosts
       }
     default:
       return state;

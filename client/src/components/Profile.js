@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {sendFriendRequest, respondToFriendRequest} from '../actions/postActions';
+import {sendFriendRequest, respondToFriendRequest, fetchProfilePosts} from '../actions/postActions';
 import {Navbar,NavDropdown,Nav,Form,FormControl,Button} from 'react-bootstrap';
 import {Link, withRouter} from 'react-router-dom';
 
@@ -12,6 +12,7 @@ class Profile extends Component {
         this.isFriend = this.isFriend.bind(this);
         this.sendFriendRequestClick = this.sendFriendRequestClick.bind(this);
         this.respondToFriendRequestClick = this.respondToFriendRequestClick.bind(this);
+        this.props.fetchProfilePosts(this.props.location.user);
       }
     
       sendFriendRequestClick(toUser){
@@ -83,6 +84,13 @@ class Profile extends Component {
                 onClick={() => this.sendFriendRequestClick(user)}>Add Friend</button>
             )}
         </Fragment>)
+      const posts = this.props.profilePosts.map((post)=>(
+        <div className="col-3">
+        <div className="profile-posts pb-4">
+            <img src={"http://0.0.0.0:9000/"+post.picture}width="100%"height="100%"></img>
+        </div>
+    </div>
+      ))
     return (
         
       <div>
@@ -109,6 +117,7 @@ class Profile extends Component {
             <hr></hr>
             {/* <br/> */}
             <div className="row">
+                {posts}
                 <div className="col-3">
                     <div className="profile-posts pb-4">
                         <img src="https://dummyimage.com/hd1080"width="100%"height="100%"></img>
@@ -151,7 +160,8 @@ class Profile extends Component {
 const mapStateToProps = state =>  ({
     user: state.posts.user,
     sentFriendRequests: state.posts.sentFriendRequests,
-    receivedFriendRequests: state.posts.receivedFriendRequests
+    receivedFriendRequests: state.posts.receivedFriendRequests,
+    profilePosts: state.posts.profilePosts
 });
 
 
@@ -160,8 +170,9 @@ Profile.propTypes = {
     sentFriendRequests: PropTypes.array.isRequired,
     receivedFriendRequests: PropTypes.array.isRequired,
     sendFriendRequest: PropTypes.func.isRequired,
-    respondToFriendRequest: PropTypes.func.isRequired
+    respondToFriendRequest: PropTypes.func.isRequired,
+    fetchProfilePosts: PropTypes.func.isRequired
   };
   
-export default withRouter(connect(mapStateToProps, {sendFriendRequest,respondToFriendRequest})(Profile));
+export default withRouter(connect(mapStateToProps, {sendFriendRequest,respondToFriendRequest, fetchProfilePosts})(Profile));
 

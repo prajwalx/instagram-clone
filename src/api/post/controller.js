@@ -66,6 +66,7 @@ export const dislike = ({ user, params }, res, next) =>
 
 export const newsfeed = ({ user, querymen: { query, select, cursor } }, res, next) => {
   const friends = user.friends.map((friend) => friend.id)
+  friends.push(user.id)// get own posts also in news feed
   Post.find(query, select, cursor)
     .where('user')
     .in(friends)
