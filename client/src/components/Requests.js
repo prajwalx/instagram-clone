@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {Link,withRouter} from 'react-router-dom';
 import {sendFriendRequest, respondToFriendRequest} from '../actions/postActions';
 
-class Users extends Component {
+class Requests extends Component {
   constructor(props) {
     super(props);
     this.hasUser = this.hasUser.bind(this);
@@ -60,37 +60,38 @@ class Users extends Component {
   }
     
   render() {
-    const users = this.props.users.map((user)=>(
+    const users = this.props.receivedFriendRequests.filter((fr)=>fr.status==="PENDING")
+    .map(({fromUser})=>(
         <div className="row pt-1 "style={{backgroundColor:'white',
             
-            }}  key={user.id}>
+            }}  key={fromUser.id}>
                 <div className="small-img col-3">
-                    <img src={user.picture}
+                    <img src={fromUser.picture}
                         className="img-rounded" width="100px"height="100px"></img>
                 </div>
                 <div className="col-5 p-2">
-                    <Link to={{pathname:"/profile",user}}><h5 className="mb-0">{user.name}</h5></Link>
-                    <p className="mb-0">{user.email}</p>
-                    <p>{user.location||'New Delhi, India'}</p>
+                    <Link to={{pathname:"/profile",fromUser}}><h5 className="mb-0">{fromUser.name}</h5></Link>
+                    <p className="mb-0">{fromUser.email}</p>
+                    <p>{fromUser.location||'New Delhi, India'}</p>
                 </div>
                 <div className="col-4 d-flex align-items-center">
                 { 
-                (this.isFriend(user))? (
+                (this.isFriend(fromUser))? (
                     <button className="btn btn-sm btn-outline-success ml-auto">Friends</button>)
-                : (this.hasUser(this.props.sentFriendRequests,user,"toUser"))? (
+                : (this.hasUser(this.props.sentFriendRequests,fromUser,"toUser"))? (
                     <button className="btn btn-sm btn-outline-secondary ml-auto">Pending Request</button>)
-                : (this.hasUser(this.props.receivedFriendRequests,user,"fromUser"))?(
+                : (this.hasUser(this.props.receivedFriendRequests,fromUser,"fromUser"))?(
                     <Fragment>
                     <button className="btn btn-sm btn-outline-warning ml-auto"
-                    onClick={() => this.respondToFriendRequestClick(user,"ACCEPTED")}>Accept Request</button>
+                    onClick={() => this.respondToFriendRequestClick(fromUser,"ACCEPTED")}>Accept Request</button>
                     <button className="btn btn-sm btn-outline-danger ml-auto"
-                    onClick={() => this.respondToFriendRequestClick(user,"REJECTED")}>Reject Request</button>
+                    onClick={() => this.respondToFriendRequestClick(fromUser,"REJECTED")}>Reject Request</button>
                     </Fragment>
-                ):(this.props.user.id=== user.id)?(
+                ):(this.props.user.id=== fromUser.id)?(
                     <div></div>
                 ):(
                     <button className="btn btn-sm btn-primary ml-auto"
-                    onClick={() => this.sendFriendRequestClick(user)}>Add Friend</button>
+                    onClick={() => this.sendFriendRequestClick(fromUser)}>Add Friend</button>
                 )}
                 </div>
                 <div className="col-12"><hr></hr></div>
@@ -115,7 +116,7 @@ const mapStateToProps = state =>  ({
 });
 
 
-Users.propTypes = {
+Requests.propTypes = {
     users: PropTypes.array.isRequired,
     user: PropTypes.object.isRequired,
     sentFriendRequests: PropTypes.array.isRequired,
@@ -124,4 +125,4 @@ Users.propTypes = {
     respondToFriendRequest: PropTypes.func.isRequired
   };
   
-export default withRouter(connect(mapStateToProps, {sendFriendRequest,respondToFriendRequest})(Users));
+export default withRouter(connect(mapStateToProps, {sendFriendRequest,respondToFriendRequest})(Requests));

@@ -40,7 +40,7 @@ passport.use('password', new BasicStrategy((email, password, done) => {
     if (err) done(err)
   })
 
-  User.findOne({ email }).then((user) => {
+  User.findOne({ email }).populate('friends').then((user) => {
     if (!user) {
       done(true)
       return null
@@ -68,7 +68,7 @@ passport.use('token', new JwtStrategy({
     ExtractJwt.fromAuthHeaderWithScheme('Bearer')
   ])
 }, ({ id }, done) => {
-  User.findById(id).then((user) => {
+  User.findById(id).populate('friends').then((user) => {
     done(null, user)
     return null
   }).catch(done)

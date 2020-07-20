@@ -19,6 +19,9 @@ import Signup from './components/Signup';
 import Users from './components/Users';
 import history from './components/history';
 import Profile from './components/Profile';
+import NewsFeed from './components/NewsFeed';
+import Friends from './components/Friends';
+import Requests from './components/Requests';
 
 
 class App extends Component {
@@ -49,6 +52,9 @@ class App extends Component {
               <PublicOnlyRoute exact={true} path="/signup"  component={(Signup)} />
               <PrivateRoute exact={true} path="/users"   component={(Users)}/>
               <PrivateRoute exact={true} path="/profile"   component={(Profile)}/>
+              <PrivateRoute exact={true} path="/friends"   component={(Friends)}/>
+              <PrivateRoute exact={true} path="/requests"   component={(Requests)}/>
+              <PrivateRoute exact={true} path="/"   component={(NewsFeed)}/>
             </Switch>
               
           </div>

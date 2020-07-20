@@ -51,6 +51,8 @@ class NavbarComponent extends Component {
         <NavDropdown title="Settings" id="basic-nav-dropdown">
                 <NavDropdown.Item ><Link to={{pathname:"/profile",user:this.props.user}}>Profile</Link></NavDropdown.Item>
                 <NavDropdown.Divider />
+                <NavDropdown.Item ><Link to={{pathname:"/requests"}}>Requests</Link></NavDropdown.Item>
+                <NavDropdown.Divider />
                 <NavDropdown.Item href="#action/3.4">Edit</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={this.props.logOut}>LogOut</NavDropdown.Item>
@@ -78,15 +80,12 @@ class NavbarComponent extends Component {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="">
               <Nav.Link><Link to="/">Home</Link></Nav.Link>
-              <Nav.Link><Link to="/posts">Posts</Link></Nav.Link>
+              { this.props.auth === true && <Nav.Link><Link to="/friends">Friends</Link></Nav.Link>}
               { this.props.auth === true && SearchBar }
             </Nav>
             <Form inline className="ml-auto mr-5">
               { this.props.auth === false && LoginSignupButtons }
               { this.props.auth === true && Settings }
-              {/* { this.props.auth === true && LogOutButton } */}
-              
-              
             </Form>
           </Navbar.Collapse>
         </Navbar>

@@ -11,6 +11,7 @@ export const create = ({ user, bodymen: { body } }, res, next) =>
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   FriendRequest.find(query, select, cursor)
     .populate('toUser')
+    .populate('fromUser')
     .then((friendRequests) => friendRequests.map((friendRequest) => friendRequest.view()))
     .then(success(res))
     .catch(next)
@@ -35,8 +36,8 @@ export const update = ({ user, bodymen: { body }, params }, res, next) =>
       if (friendRequest && friendRequest.status === ACCEPTED) {
         await UpdateFriends(friendRequest.fromUser.id, friendRequest.toUser.id, res, next)
         await UpdateFriends(friendRequest.toUser.id, friendRequest.fromUser.id, res, next)
-        return friendRequest
-      } else return null
+      }
+      return friendRequest
     })
     .then(success(res))
     .catch(next)
