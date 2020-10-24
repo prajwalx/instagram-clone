@@ -39,7 +39,7 @@ const config = {
   test: { },
   development: {
     mongo: {
-      uri: 'mongodb://localhost/social-net-app-dev',
+      uri: process.env.MONGODB_URI || 'mongodb://localhost/social-net-app-dev',
       options: {
         debug: true
       }

@@ -1,25 +1,36 @@
-# Social Media Clone
+# Insta + FB Clone 🥳
+A Social Media 👥 Clone Application using MongoDB, Express, React, Node and Docker
+🌟 Some Features of this app:
+  -  Login / Signup
+  - View Profile
+  - Send Friend Requests
+  - Post Pictures
+  - Like / Unlike Posts
+  - Search Users by name / email / location
+  ## Some ScreenShots
+   ### Profile 
+![alt text](https://i.ibb.co/w0MkMSC/Screenshot-2020-10-24-at-8-32-06-PM.png "Logo Title Text 1")
 
-A Social Media Clone Application using MongoDB, Express, React, Node
+### NewsFeed
+![alt text](https://i.ibb.co/8B5jSf5/Screenshot-2020-10-24-at-8-32-37-PM.png "Logo Title Text 1")
 
+### Users
+![alt text](https://i.ibb.co/whC3N46/Screenshot-2020-10-24-at-8-30-13-PM.png "Logo Title Text 1")
+
+### Signup / Login
+![alt text](https://i.ibb.co/1fgZjLY/Screenshot-2020-10-24-at-8-26-48-PM.png "Logo Title Text 1")
+
+Pull Requests are welcome for new features, bug fixes and others.
 
 
 ## Playing locally
 
-First, you will need to install and run [MongoDB](https://www.mongodb.com/) in another terminal instance.
-
+The complete app is dockerized and can be set up by a single command :🤩
+Open terminal in root directory and run
 ```bash
-$ mongod
+$ docker-compose up
 ```
-
-Then, run the server
-
-```bash
-$ npm install 
-$ npm start
-Express server listening on http://0.0.0.0:9000, in development mode
-```
-
+Note: If you are new to docker download [Docker Desktop](https://www.docker.com/products/docker-desktop) and keep it running before executing above command
 
 ## Directory structure
 
